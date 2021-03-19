@@ -73,4 +73,4 @@ server {\n
 
 
 SHELL
-ends
+end
