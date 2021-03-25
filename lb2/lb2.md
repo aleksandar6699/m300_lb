@@ -1,12 +1,21 @@
 # LB2 Dokumentation
 ## Inhaltsverzeichnis
-- [Einleitung](##Einleitung)
-    - [Sicherheit](###Sicherheit)
-- [Grafische Übersicht](##GrafischeÜbersicht)
-    - [Beschreibung](###Beschreibung)
-- [Erklärung Code](##ErklärungCode)
-- [Testverfahren](##Testverfahren)
-- [Quellenangaben](##Quellenangaben)
+- [Einleitung](#Einleitung)
+    - [Sicherheit](#Sicherheit)
+- [Grafische Übersicht]()
+    - [Beschreibung](#Beschreibung)
+- [Erklärung Code]()
+    - [Code](#Code)
+        - [Vagrant-VM Konfiguration]()
+        - [Apache Installation]()
+        - [Firewall Regeln]()
+        - [Installation NGINX]()
+        - [Zertifikat](#Zertifikat)
+    - [Konfiugrationsdatei nginx_conf.txt]()
+        - [SSL](#SSL)
+        - [Reverse-Proxy](#Reverse-Proxy)
+- [Testverfahren](#Testverfahren)
+- [Quellenangaben](#Quellenangaben)
 
 ## Einleitung
 In diesem Projekt handelt es sich um IaC, wo ich mit einem Vagrant-File eine Infrastruktur mit einem Unix System aufsetze. Auf diesem Server installiere ich die zwei bekanntesten Unix Webserver-Softwares Apache und NGINX. Den Apache setze ich als Webserver auf und den NGINX konfigurere ich als einen Reverse-Proxy für die Sicherheit.
@@ -14,23 +23,21 @@ In diesem Projekt handelt es sich um IaC, wo ich mit einem Vagrant-File eine Inf
 ### Sicherheit
 Um die Verbindung zwischen den Client und dem Server zu sichern, werde ich den Zugriff über HTTPS mit einem selbst erstellen Zertifikat gewährleisten.
 
-## Grafische Übersicht
+## Grafische Übersicht <a name=gu>
 ```
 +---------------------------------------------------------------+
-! Notebook - Schulnetz 10.x.x.x und Privates Netz 192.168.55.1  !                 
-! Port: 8080 (192.158.55.101:80)                                !	
+! OS: Ubuntu                                                    !                 
+! NAT-Port: 8080                                                !	
 !                                                               !	
 !    +--------------------+          +---------------------+    !
-!    ! Web Server         !          ! Datenbank Server    !    !       
-!    ! Host: web01        !          ! Host: db01          !    !
-!    ! IP: 192.168.55.101 ! <------> ! IP: 192.168.55.100  !    !
-!    ! Port: 80           !          ! Port 3306           !    !
-!    ! Nat: 8080          !          ! Nat: -              !    !
+!    ! Reverse-Proxy      !          ! Webserver           !    !       
+!    ! Software: NGINX    !          ! Software: Apache    !    !
+!    ! Port: 443          ! <------> ! Port 8080           !    !
 !    +--------------------+          +---------------------+    !
 !                                                               !	
 +---------------------------------------------------------------+
 ```
-> *Die Grafische Darstellung soll das Verhältnis zwischen den Systemen und Verbindungen aufzeigen*
+> *Die Grafische Darstellung soll das Verhältnis zwischen den Systemen und Verbindungen aufzeigen. Die Dienste laufen auf dem gleichen System.*
 ### Beschreibung
 Der Host-Client geht auf den Browser und tippt "https://localhost:8009" in die Suchzeile. Der Host-Client greift mit dem Port 8009 auf die NAT-Schnittstelle des Gast-Systems. Das Port-Forwarding leitet den Port 8009 auf den Port 443. 
 
@@ -107,7 +114,7 @@ Folgende Daten währden gesetzt:
 ```
 > Mit diesem Befehlen installieren wir Apache also Webservice.
 
-#### KOnfiguration von Apache
+#### Konfiguration von Apache
 Um den Server zu konfiguriren, werden wir Dateien ändern.
 ```
     sudo sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf
@@ -147,8 +154,6 @@ server {
         listen 80;
         return 301 https://$host$request_uri;
     }
-
-
 server {
 
     listen 443 ssl;
@@ -210,7 +215,6 @@ listen 443 ssl;
   sudo rm -rf /etc/nginx/sites-enabled/default
   sudo cp /var/www/html/nginx_config.txt /etc/nginx/sites-enabled/default
   sudo systemctl restart nginx
-
 ```
 Zum Schluss ersetzen wir die Dateien und starten den NGINX neu. 
 ## Testverfahren
@@ -232,10 +236,10 @@ Ist-Zustand:
 
 Ist-Zustand:
 
-![Zertifikat]()
+![Zertifikat](https://github.com/aleksandar6699/m300_lb/blob/6d4c09501a6bbda05ef9db00aa8829196a20e850/lb2/image/img_cert.JPG)
 
 ## Quellenangaben
 - [NGINX](https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-18-04-server)
 - [NGINX SSL](https://willy-tech.de/https-in-nginx-einrichten/) 
 - [OpenSSL](https://www.grund-wissen.de/linux/server/openssl.html)
-- [Vagrant]()
+- [Vagrant](https://github.com/mc-b/M300/blob/master/vagrant/web/Vagrantfile)
