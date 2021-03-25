@@ -2,16 +2,17 @@
 ## Inhaltsverzeichnis
 - [Einleitung](#Einleitung)
     - [Sicherheit](#Sicherheit)
-- [Grafische Übersicht]()
+- [Grafische Übersicht](#gu)
     - [Beschreibung](#Beschreibung)
-- [Erklärung Code]()
+- [Erklärung Code](#ec)
     - [Code](#Code)
-        - [Vagrant-VM Konfiguration]()
-        - [Apache Installation]()
-        - [Firewall Regeln]()
-        - [Installation NGINX]()
+        - [Vagrant-VM Konfiguration](#vk)
+        - [Apache Installation](#ai)
+        - [Konfiguration von Apache](#ka)
+        - [Firewall Regeln](#fr)
+        - [Installation NGINX](#in)
         - [Zertifikat](#Zertifikat)
-    - [Konfiugrationsdatei nginx_conf.txt]()
+    - [Konfiugrationsdatei nginx_conf.txt](#kn)
         - [SSL](#SSL)
         - [Reverse-Proxy](#Reverse-Proxy)
 - [Testverfahren](#Testverfahren)
@@ -23,7 +24,7 @@ In diesem Projekt handelt es sich um IaC, wo ich mit einem Vagrant-File eine Inf
 ### Sicherheit
 Um die Verbindung zwischen den Client und dem Server zu sichern, werde ich den Zugriff über HTTPS mit einem selbst erstellen Zertifikat gewährleisten.
 
-## Grafische Übersicht <a name=gu>
+## Grafische Übersicht <a name="gu"></a>
 ```
 +---------------------------------------------------------------+
 ! OS: Ubuntu                                                    !                 
@@ -46,7 +47,7 @@ Der Host-Client geht auf den Browser und tippt "https://localhost:8009" in die S
 > Der Reverse-Proxy leitet dann das wieder an den Port 8080.
 > Der Webserver (Apache) empfängt es und kann auf die Anfrage vom Host-Client mit der Webseite antworten.
 
-## Erklärung Code
+## Erklärung Code <a name="ec"></a>
 ### Code
 Gesamter Code:
 ```
@@ -88,7 +89,7 @@ config.vm.provision "shell", inline: <<-SHELL
 SHELL
 end
 ```
-#### Vagrant-VM Konfiguration
+#### Vagrant-VM Konfiguration <a name="vk"></a>
 ```
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/xenial64"
@@ -107,14 +108,14 @@ Folgende Daten währden gesetzt:
 * `config.vm.synced_folder ".", "/var/www/html"` erstellt eine Synchornisation zwischen den beiden Verzeichnissen.
 * Mit `config.vm.provider "virtualbox"...` erstellen wir die tatsächliche Virtuelle Maschine. Der Parameter `vb.memory = "512"` gibt das RAM der VM an.
 * Die Zeile `config.vm.provision "shell", inline: <<-SHELL` erlaubt uns unsere Unix-Befehle beim installieren der VM, gleich abzuspielen.
-#### Apache Installation
+#### Apache Installation <a name="ai"></a>
 ```
   sudo apt-get update
   sudo apt-get -y install apache2
 ```
 > Mit diesem Befehlen installieren wir Apache also Webservice.
 
-#### Konfiguration von Apache
+#### Konfiguration von Apache <a name="ka"></a>
 Um den Server zu konfiguriren, werden wir Dateien ändern.
 ```
     sudo sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf
@@ -123,7 +124,7 @@ Um den Server zu konfiguriren, werden wir Dateien ändern.
 > Wir wollen mit der Konfiguration, den Port von Apache ändern. Das machen wir in der ports.conf und 000-default.conf-Datei. Vom Standart-Port 80 setzen wir ihn auf Port 8080.
 > Der Befehl "sed" ermöglicht uns gezielt den Inhalt von einer Datei zu ändern. Wir ändern mit dem Befehl den Wert 80 in 8080 um.
 
-#### Firewall Regeln
+#### Firewall Regeln <a name="fr"></a>
 Wir erstellen Firewall-Regeln für den Zugriff zu den Diensten.
 ```
   sudo ufw enable
@@ -132,7 +133,7 @@ Wir erstellen Firewall-Regeln für den Zugriff zu den Diensten.
 ```
 > Mit diesen Befehlen erlauben wir die Port 8080 und 443 auf unserem System.
 
-#### Installation NGINX
+#### Installation NGINX <a name="in"></a>
 ```
   sudo apt-get -y install nginx
   sudo systemctl start nginx
@@ -148,13 +149,8 @@ Wir erstellen Firewall-Regeln für den Zugriff zu den Diensten.
 > OpenSSL bietet uns die Möglichkeit Zertifikate zu erstellen. 
 Mit diesem Befehl erstelle ich interaktiv ein Self-Signed Zertifikat. Danach kopieren wir das CA, um es später bei unseren zu installieren.
 
-### Konfiugrationsdatei nginx_conf.txt
+### Konfiugrationsdatei nginx_conf.txt <a name="kn"></a>
 ´´´
-server {
-        listen 80;
-        return 301 https://$host$request_uri;
-    }
-server {
 
     listen 443 ssl;
     server_name localhost;
@@ -179,7 +175,6 @@ server {
 
       proxy_pass          http://localhost:8080;
     }
-  }
 ´´´
 > *Das ist die Konfigurations-Datei vom Reverse-Proxy*
 
