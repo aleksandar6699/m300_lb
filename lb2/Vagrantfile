@@ -6,22 +6,19 @@ config.vm.provider "virtualbox" do |vb|
   vb.memory = "512"  
 end
 config.vm.provision "shell", inline: <<-SHELL
-  # Packages vom lokalen Server holen
-  # sudo sed -i -e"1i deb {{config.server}}/apt-mirror/mirror/archive.ubuntu.com/ubuntu xenial main restricted" /etc/apt/sources.list 
-  
   #Install Apache
-  sudo apt-get update #
-  sudo apt-get -y install apache2 #
+  sudo apt-get update
+  sudo apt-get -y install apache2
   
   #Conf Apache
-  sudo sed -i's/80/8080/g' /etc/apache2/sites-available/000-default.conf #
-  sudo sed -i 's/80/8080/g' /etc/apache2/ports.conf #
-  sudo systemctl restart apache2 #
+  sudo sed -i 's/80/8080/g' /etc/apache2/sites-available/000-default.conf
+  sudo sed -i 's/80/8080/g' /etc/apache2/ports.conf
+  sudo systemctl restart apache2
   
   #Firewall
-  sudo ufw enable #
-  sudo ufw allow proto tcp from any to any port 443,8080 #
-  sudo ufw reload #
+  sudo ufw enable
+  sudo ufw allow proto tcp from any to any port 443,8080
+  sudo ufw reload
 
   #Install NGINX
   sudo apt-get -y install nginx
@@ -30,8 +27,8 @@ config.vm.provision "shell", inline: <<-SHELL
   
   #Zertifikat erstellen
   openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj "/C=CH/ST=Zuerich/L=Zuerich/O=TBZ/CN=localhost" -keyout /etc/nginx/cert.key  -out /etc/nginx/cert.crt
-  
-#NGINX Konfiguation
+  sudo cp /etc/nginx/cert.crt /var/www/html/cert.crt
+  #NGINX Konfiguation
   sudo rm -rf /etc/nginx/sites-enabled/default
   sudo cp /var/www/html/nginx_config.txt /etc/nginx/sites-enabled/default
   sudo systemctl restart nginx
