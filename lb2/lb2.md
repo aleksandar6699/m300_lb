@@ -223,7 +223,7 @@ Testfall 1:
 
 Ist-Zustand:
 
-![Apache-Website]()
+![Apache-Website](lb2/image/img_apache.JPG)
 
 
 | Testfall-ID              | 2            |
@@ -232,7 +232,7 @@ Ist-Zustand:
 
 Ist-Zustand:
 
-![Zertifikat]()
+![Zertifikat](lb2/image/img_cert.JPG)
 
 ## Quellenangaben
 - [NGINX](https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-18-04-server)
