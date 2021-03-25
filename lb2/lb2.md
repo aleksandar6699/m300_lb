@@ -219,11 +219,11 @@ Zum testen, habe ich das Vagrant-File angespielt und die
 Testfall 1:
 | Testfall-ID              | 1            |
 |:--------------------:|:--------------------:|
-| Soll-Zustand       |Der Client sollte auf die Webseite zugreiffen können.|
+| Soll-Zustand       |Der Client sollte auf die Webseite zugreiffen können.       |
 
 Ist-Zustand:
 
-![Apache-Website](lb2/image/img_apache.JPG)
+![Apache-Website](https://github.com/aleksandar6699/m300_lb/blob/d3acd1f952fb3f48e71cb87f5004b3b744c769be/lb2/image/img_apache.JPG)
 
 
 | Testfall-ID              | 2            |
@@ -232,7 +232,7 @@ Ist-Zustand:
 
 Ist-Zustand:
 
-![Zertifikat](lb2/image/img_cert.JPG)
+![Zertifikat]()
 
 ## Quellenangaben
 - [NGINX](https://www.digitalocean.com/community/tutorials/how-to-configure-nginx-as-a-web-server-and-reverse-proxy-for-apache-on-one-ubuntu-18-04-server)
