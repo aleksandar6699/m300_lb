@@ -3,7 +3,7 @@
 - [Einleitung] (einleitung)
 - [Grafische Übersicht](#gu)
     - [Beschreibung](#beschreibung)
-- [Erklärung](#ec)
+- [Erklärung Konfiguration](#ec)
     - [Dockerfile](#dockerfile)
     - [Docker-Compose](#docker-compose)
         - [Datenbank](#datenbank)
@@ -11,3 +11,26 @@
         - [Wordpress](#wordpress)
 - [Testverfahren](#testverfahren)
 - [Quellenangaben](#quellenangaben)
+
+## Einleitung
+
+
+## Grafische Übersicht <a name="gu"></a>
+
+### Beschreibung
+
+## Erklärung Konfiguration
+
+### Dockerfile
+
+### Docker-Compose
+
+#### Datenbank
+
+#### phpMyAdmin
+
+#### Wordpress
+
+## Testverfahren
+
+## Quellenangaben
