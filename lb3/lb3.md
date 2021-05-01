@@ -1,16 +1,16 @@
 # Dokumentation LB3
 ## Inhaltsverzeichnis
-- [Einleitung] (einleitung)
+- [Einleitung](#Einleitung)
 - [Grafische Übersicht](#gu)
-    - [Beschreibung](#beschreibung)
+    - [Beschreibung](#Beschreibung)
 - [Erklärung Konfiguration](#ec)
-    - [Dockerfile](#dockerfile)
-    - [Docker-Compose](#docker-compose)
-        - [Datenbank](#datenbank)
+    - [Dockerfile](#Dockerfile)
+    - [Docker-Compose](#Docker-Compose)
+        - [Datenbank](#Datenbank)
         - [phpMyAdmin](#phpMyAdmin)
-        - [Wordpress](#wordpress)
-- [Testverfahren](#testverfahren)
-- [Quellenangaben](#quellenangaben)
+        - [Wordpress](#Wordpress)
+- [Testverfahren](#Testverfahren)
+- [Quellenangaben](#Quellenangaben)
 
 ## Einleitung
 
