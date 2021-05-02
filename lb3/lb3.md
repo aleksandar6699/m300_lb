@@ -77,7 +77,9 @@ Das ist der Abschnitt zum Container zu der Datenbank:
       - wpnw
 ```
 > `image: mysql:5.7` bestimmt das Image mit dem wir den Container aufbauen. Der Tag *:5.7* bestimmt die Version des Dienstes.
+
 > `environment:` bestimmt die Umgebungsvariablen vom Container. So bestimmen wir die Passwörter und die Benutzer.
+
 > Mit dem Parameter `networks:` bestimmen wir das Netzwerk, zu welchem der Container gehört. Dieser Container gehört somit zu dem Netzwerk *wpnw*.
 
 #### phpMyAdmin
@@ -97,9 +99,13 @@ Das ist der Docker-Compose Abschitt zum Container phpMyAdmin:
       - wpnw
 ```
 > Beim `depends_on:` geben wir die Anhängigkeit zu einem Container. Dort geben wir an, dass der Container vom *db* abhängig ist.
+
 > `image: phpmyadmin/phpmyadmin` bestimmt das Image mit dem wir den Container aufbauen.
+
 > Mit `ports:` und dem Parameter `- '8050:80'` Forwarden wir den Port 8050 von der VM zum Port 80 auf dem Container.
+
 > `environment:` bestimmt die Umgebungsvariablen vom Container.
+
 > Der Parameter `networks:` bestimmt in welchen Netzwerk der Container sich befindet. Dieser Container befindet sich im Netzwerk *wpnw*
 
 #### Wordpress
@@ -116,8 +122,11 @@ Das ist der Abschnitt zum Container vom Wordpress:
       - wpnw
 ```
 > Beim `depends_on:` geben wir die Anhängigkeit zu einem Container. Dort geben wir an, dass der Container vom *db* abhängig ist.
+
 > Mit dem Parameter `build: .` sagen wir dem Docker-Compose, er soll das Image mit dem Dockerfile aufbauen. Der Punkt weisst an, dass sich das File im aktuellen Verzechnis befindet.
+
 > Mit `ports:` und dem Parameter `- '8000:80'` Forwarden wir den Port 8000 von der VM zum Port 80 auf dem Container.
+
 > Der Parameter `networks:` bestimmt in welchen Netzwerk der Container sich befindet. Dieser Container befindet sich im Netzwerk *wpnw*
 
 ## Testverfahren
