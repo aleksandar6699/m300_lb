@@ -138,7 +138,7 @@ Testfall 1:
 
 Ist-Zustand:
 
-![Wordpress]()
+![Wordpress](https://github.com/aleksandar6699/m300_lb/blob/6ead06e054c73edfb4603043f9259e4d9a06c6dc/lb3/image/wordpress.JPG)
 
 | Testfall-ID              | 2            |
 |:--------------------:|:--------------------:|
@@ -146,9 +146,9 @@ Ist-Zustand:
 
 Ist-Zustand:
 
-![phpMyAdmin]()
+![phpMyAdmin](https://github.com/aleksandar6699/m300_lb/blob/6ead06e054c73edfb4603043f9259e4d9a06c6dc/lb3/image/phpmyadmin_login.JPG)
 
-![Root]()
+![Root](https://github.com/aleksandar6699/m300_lb/blob/6ead06e054c73edfb4603043f9259e4d9a06c6dc/lb3/image/root_access.JPG)
 
 ## Quellenangaben
 
