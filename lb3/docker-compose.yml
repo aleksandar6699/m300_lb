@@ -14,4 +14,30 @@ services:
     networks:
       - wpnw
 
-      
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8050:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - wpnw
+
+  wordpress:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - '8000:80'
+    restart: always
+    networks:
+      - wpnw
+
+networks:
+  wpnw:
+volumes:
+  db_data:

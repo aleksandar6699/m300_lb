@@ -14,22 +14,87 @@
 
 ## Einleitung
 
+In diesem Projekt erstelle ich die eine Umgebung für Entwickler. Ich erstelle dabei mit dem Dockerfile und Docker-Compose drei Container mit jeweis verschiedenen Diensten.
 
 ## Grafische Übersicht <a name="gu"></a>
 
 ### Beschreibung
-
+Dabei wird Wordpress, phpMyAdmin und einen MySQL-Datenbank. Alle diese Dienste befinden sich im gleichen Netzwerk und sind miteinander in Verbindung.
+Wir verbinden unseren Dienst Wordpress mit der Datenbank und mit dem phpMyAdmin können wir die Datenbanken bearbeiten.
 ## Erklärung Konfiguration
+In diesem Teil werden die zwei Datein: Dockerfile und Docker-Compose erklärt:
 
 ### Dockerfile
+In diesem Dockerfile bestimmen wir die Angaben für den Dienst Wordpress.
+```
+FROM wordpress:latest
+ENV WORDPRESS_DB_HOST=db:3306
+ENV WORDPRESS_DB_USER=wordpress
+ENV WORDPRESS_DB_PASSWORD=wordpress
+ENV WORDPRESS_DB_NAME=wordpress
+```
+Mit dem `FROM wordpress:latest` bestimmen wir welches Image wir nehmen wollen. Der Tag *:latest* bestimmt die Version des Dienstes.
+
+Der Parameter `ENV ...` geben wir dem Dienst noch die Umgebungsvariablen. Mit diesen Variabel geben wir den Wordpress an, dass wir uns mit der MySQL-Datenbank verbinden sollen.
 
 ### Docker-Compose
-
+In diesem Abschnitt erkläre ich die **Docker-Compose** Datei.
 #### Datenbank
-
+Das ist der Abschnitt zum Container zu der Datenbank:
+```
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    networks:
+      - wpnw
+```
 #### phpMyAdmin
+Das ist der Docker-Compose Abschitt zum Container phpMyAdmin:
+```
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8050:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - wpnw
+```
+> Beim `depends_on:` geben wir die Anhängigkeit zu einem Container. Dort geben wir an, dass der Container vom *db* abhängig ist.
+
+> `image: phpmyadmin/phpmyadmin` bestimmt das Image mit dem wir den Container aufbauen.
+> Mit `ports:` und dem Parameter `- '8050:80'` Forwarden wir den Port 8050 von der VM zum Port 80 auf dem Container.
+> `environment:` bestimmt die Umgebungsvariablen vom Container.
+> Der Parameter `networks:` bestimmt in welchen Netzwerk der Container sich befindet. Dieser Container befindet sich im Netzwerk *wpnw*
 
 #### Wordpress
+Das ist der Abschnitt zum Container vom Wordpress:
+```
+  wordpress:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - '8000:80'
+    restart: always
+    networks:
+      - wpnw
+```
+> Beim `depends_on:` geben wir die Anhängigkeit zu einem Container. Dort geben wir an, dass der Container vom *db* abhängig ist.
+> Mit dem Parameter `build: .` sagen wir dem Docker-Compose, er soll das Image mit dem Dockerfile aufbauen. Der Punkt weisst an, dass sich das File im aktuellen Verzechnis befindet.
+> Mit `ports:` und dem Parameter `- '8000:80'` Forwarden wir den Port 8000 von der VM zum Port 80 auf dem Container.
+> Der Parameter `networks:` bestimmt in welchen Netzwerk der Container sich befindet. Dieser Container befindet sich im Netzwerk *wpnw*
 
 ## Testverfahren
 
