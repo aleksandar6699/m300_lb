@@ -18,10 +18,30 @@ In diesem Projekt erstelle ich die eine Umgebung für Entwickler. Ich erstelle d
 
 ## Grafische Übersicht <a name="gu"></a>
 
+Eine grafische Übersicht vom Aufbau der Struktur:
+```
+    +-----------------------------------------------------------------------------+
+    ! +----------------------+ +------------------------------+ +---------------+ !       
+    ! | Container: Wordpress | | Container: phpmyadmin        | | Container: db | !
+    ! | Image : Wordpress    | | Image: phpmyadmin/phpmyadmin | | Image: mysql  | !
+    ! | Tag: latest          | | Tag: keine (latest)          | | Tag: 5.7      | !
+    ! | Port: 8000:80        | | Port: 8050:80                | |               | !
+    ! +----------------------+ +------------------------------+ +---------------+ !
+    !             |                            |                        |         !
+    ! +-------------------------------------------------------------------------+ !
+    ! | Netzwerk-Verbindung                                                     | !
+    ! | Name: wpnw                                                              | !
+    ! +-------------------------------------------------------------------------+ !
+    ! Container-Engine: Docker                                                    !	
+    +-----------------------------------------------------------------------------+
+```
+
+
 ### Beschreibung
 Dabei wird Wordpress, phpMyAdmin und einen MySQL-Datenbank. Alle diese Dienste befinden sich im gleichen Netzwerk und sind miteinander in Verbindung.
 Wir verbinden unseren Dienst Wordpress mit der Datenbank und mit dem phpMyAdmin können wir die Datenbanken bearbeiten.
-## Erklärung Konfiguration
+
+## Erklärung Konfiguration <a name="ec"></a>
 In diesem Teil werden die zwei Datein: Dockerfile und Docker-Compose erklärt:
 
 ### Dockerfile
@@ -39,6 +59,7 @@ Der Parameter `ENV ...` geben wir dem Dienst noch die Umgebungsvariablen. Mit di
 
 ### Docker-Compose
 In diesem Abschnitt erkläre ich die **Docker-Compose** Datei.
+
 #### Datenbank
 Das ist der Abschnitt zum Container zu der Datenbank:
 ```
@@ -55,6 +76,10 @@ Das ist der Abschnitt zum Container zu der Datenbank:
     networks:
       - wpnw
 ```
+> `image: mysql:5.7` bestimmt das Image mit dem wir den Container aufbauen. Der Tag *:5.7* bestimmt die Version des Dienstes.
+> `environment:` bestimmt die Umgebungsvariablen vom Container. So bestimmen wir die Passwörter und die Benutzer.
+> Mit dem Parameter `networks:` bestimmen wir das Netzwerk, zu welchem der Container gehört. Dieser Container gehört somit zu dem Netzwerk *wpnw*.
+
 #### phpMyAdmin
 Das ist der Docker-Compose Abschitt zum Container phpMyAdmin:
 ```
@@ -72,7 +97,6 @@ Das ist der Docker-Compose Abschitt zum Container phpMyAdmin:
       - wpnw
 ```
 > Beim `depends_on:` geben wir die Anhängigkeit zu einem Container. Dort geben wir an, dass der Container vom *db* abhängig ist.
-
 > `image: phpmyadmin/phpmyadmin` bestimmt das Image mit dem wir den Container aufbauen.
 > Mit `ports:` und dem Parameter `- '8050:80'` Forwarden wir den Port 8050 von der VM zum Port 80 auf dem Container.
 > `environment:` bestimmt die Umgebungsvariablen vom Container.
@@ -98,4 +122,27 @@ Das ist der Abschnitt zum Container vom Wordpress:
 
 ## Testverfahren
 
+Testfall 1:
+| Testfall-ID              | 1            |
+|:--------------------:|:--------------------:|
+| Soll-Zustand       |Ich kann mich auf den Port 8000 verbinden und ein Login für Wordpress erstellen und anmelden.|
+
+Ist-Zustand:
+
+![Wordpress]()
+
+| Testfall-ID              | 2            |
+|:--------------------:|:--------------------:|
+| Soll-Zustand       |Ich kann auf den Port 8050 zugreifen und mich anmelden im phpMyAdmin.|
+
+Ist-Zustand:
+
+![phpMyAdmin]()
+
+![Root]()
+
 ## Quellenangaben
+
+- [Wordpress](https://hub.docker.com/_/wordpress)
+- [phpMyAdmin](https://hub.docker.com/r/phpmyadmin/phpmyadmin)
+- [MySQL](https://hub.docker.com/_/mysql) 
